@@ -12,6 +12,29 @@
 %% TYPES.
 %%
 
+-type color() :: black
+               | blue
+               | cyan
+               | green
+               | magenta
+               | red
+               | white
+               | yellow
+               | default
+               | unset.
+
+-type text_style() :: bold
+                    | dim
+                    | italic
+                    | underline
+                    | blinking.
+
+-record(style, {text_styles = []    :: [text_style()],
+                foreground  = unset :: color(),
+                background  = unset :: color()
+               }).
+
+-type style() :: #style{}.
 -type sgr_attribute() :: binary().
 
 %%

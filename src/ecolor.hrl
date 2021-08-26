@@ -3,10 +3,11 @@
 
 %%
 %% Select Graphic Rendition (SGR) attributes.
-%% See [1] and [2] for more details.
+%% See [1], [2] and [3] for more details.
 %%
 %% [1] - https://man7.org/linux/man-pages/man4/console_codes.4.html
 %% [2] - https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+%% [3] - https://en.wikipedia.org/wiki/ANSI_escape_code
 %%
 
 -define(ATTRIBUTE_SEPARATOR, <<";">>).
