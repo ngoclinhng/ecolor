@@ -1,6 +1,6 @@
 -module(ecolor).
 
--export([]).
+-export([set_foreground/2]).
 
 -include("ecolor.hrl").
 
