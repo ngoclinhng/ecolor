@@ -111,8 +111,16 @@ reset() ->
 
 %% Returns text style sequence from the given list of styles.
 -spec text_style([text_style()]) -> binary().
-text_style(_Styles) ->
-    <<>>.
+text_style(Styles) ->
+    M = fun(bold)      -> ?TEXT_STYLE_BOLD;
+           (dim)       -> ?TEXT_STYLE_DIM;
+           (italic)    -> ?TEXT_STYLE_ITALIC;
+           (underline) -> ?TEXT_STYLE_UNDERLINE;
+           (blinking)  -> ?TEXT_STYLE_BLINKING;
+           (_)         -> <<>>
+        end,
+    List = lists:map(M, Styles),
+    join_attributes(List).
 
 %% Returns foreground color sequence based on the given color code.
 -spec foreground(color()) -> binary().
@@ -212,7 +220,18 @@ contruct_sgr_seq_from_style_test_() ->
              {?BG(cyan),      <<"\e[46m">>},
              {?BG(white),     <<"\e[47m">>},
              {?BG(default),   <<"\e[49m">>},
-             {?BG(unset),     <<>>}
+             {?BG(unset),     <<>>},
+
+             %% text style
+             {?TS([]),                         <<>>},
+             {?TS([bold]),                     <<"\e[1m">>},
+             {?TS([dim]),                      <<"\e[2m">>},
+             {?TS([italic]),                   <<"\e[3m">>},
+             {?TS([underline]),                <<"\e[4m">>},
+             {?TS([blinking]),                 <<"\e[5m">>},
+             {?TS([bold, italic]),             <<"\e[1;3m">>},
+             {?TS([italic, bold]),             <<"\e[3;1m">>},
+             {?TS([bold, italic, underline]),  <<"\e[1;3;4m">>}
             ],
     [?_assertEqual(E, sgr(I)) || {I, E} <- Tests].
 

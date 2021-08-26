@@ -15,11 +15,11 @@
 
 %% The only universally supported (?) mode is bold, other modes may not
 %% be supported by some terminals. (See [2]).
--define(GRAPHIC_MODE_BOLD,      <<"1">>).
--define(GRAPHIC_MODE_DIM,       <<"2">>).
--define(GRAPHIC_MODE_ITALIC,    <<"3">>).
--define(GRAPHIC_MODE_UNDERLINE, <<"4">>).
--define(GRAPHIC_MODE_BLINKING,  <<"5">>).
+-define(TEXT_STYLE_BOLD,      <<"1">>).
+-define(TEXT_STYLE_DIM,       <<"2">>).
+-define(TEXT_STYLE_ITALIC,    <<"3">>).
+-define(TEXT_STYLE_UNDERLINE, <<"4">>).
+-define(TEXT_STYLE_BLINKING,  <<"5">>).
 
 %% Common foreground colors
 -define(FOREGROUND_BLACK,   <<"30">>).
