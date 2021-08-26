@@ -116,7 +116,25 @@ text_style(_Styles) ->
 
 %% Returns foreground color sequence based on the given color code.
 -spec foreground(color()) -> binary().
-foreground(_Color) ->
+foreground(black) ->
+    ?FOREGROUND_BLACK;
+foreground(blue) ->
+    ?FOREGROUND_BLUE;
+foreground(cyan) ->
+    ?FOREGROUND_CYAN;
+foreground(green) ->
+    ?FOREGROUND_GREEN;
+foreground(magenta) ->
+    ?FOREGROUND_MAGENTA;
+foreground(red) ->
+    ?FOREGROUND_RED;
+foreground(white) ->
+    ?FOREGROUND_WHITE;
+foreground(yellow) ->
+    ?FOREGROUND_YELLOW;
+foreground(default) ->
+    ?FOREGROUND_DEFAULT;
+foreground(_) ->
     <<>>.
 
 %% Returns background color sequence based on the given color code.
@@ -142,6 +160,31 @@ join_attributes(Attributes) ->
 %%
 
 -ifdef(TEST).
+
+-define(
+   TFB(X, Y, Z),
+   #style{text_style = X, foreground = Y, background = Z}
+  ).
+
+-define(TS(X), #style{text_style = X}).
+-define(FG(X), #style{foreground = X}).
+-define(BG(X), #style{background = X}).
+
+contruct_sgr_seq_from_style_test_() ->
+    Tests = [
+             %% foreground color
+             {?FG(black),     <<"\e[30m">>},
+             {?FG(red),       <<"\e[31m">>},
+             {?FG(green),     <<"\e[32m">>},
+             {?FG(yellow),    <<"\e[33m">>},
+             {?FG(blue),      <<"\e[34m">>},
+             {?FG(magenta),   <<"\e[35m">>},
+             {?FG(cyan),      <<"\e[36m">>},
+             {?FG(white),     <<"\e[37m">>},
+             {?FG(default),   <<"\e[39m">>},
+             {?FG(unset),     <<>>}
+            ],
+    [?_assertEqual(E, sgr(I)) || {I, E} <- Tests].
 
 join_attributes_test_() ->
     Tests = [
