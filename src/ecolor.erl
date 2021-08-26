@@ -87,17 +87,42 @@ set_style(Style, String) when is_record(Style, style) ->
 %% HELPERS.
 %%
 
-%% Constructs a SGR sequence from the given style or the given list of
+%% Constructs a SGR sequence from the given style, the given list of
 %% attributes.
 -spec sgr(binary() | [binary()] | style()) -> binary().
-sgr(Style) ->
-    ok.
+sgr(<<>>) ->
+    <<>>;
+sgr(Attributes) when is_binary(Attributes) ->
+    <<?CSI/binary, Attributes/binary, "m">>;
+sgr(Attributes) when is_list(Attributes) ->
+    Bin = join_attributes(Attributes),
+    sgr(Bin);
+sgr(#style{text_style = TS, foreground = FG, background = BG}) ->
+    T = text_style(TS),
+    F = foreground(FG),
+    B = background(BG),
+    sgr([T, F, B]).
 
 %% Returns the SGR reset sequence to reset all attributes to their
 %% defaults.
 -spec reset() -> binary().
 reset() ->
     sgr(?RESET_CODE).
+
+%% Returns text style sequence from the given list of styles.
+-spec text_style([text_style()]) -> binary().
+text_style(_Styles) ->
+    <<>>.
+
+%% Returns foreground color sequence based on the given color code.
+-spec foreground(color()) -> binary().
+foreground(_Color) ->
+    <<>>.
+
+%% Returns background color sequence based on the given color code.
+-spec background(color()) -> binary().
+background(_Color) ->
+    <<>>.
 
 %% Joins several Select Graphic Rendition (SGR) attributes together
 %% (with semicolon).
