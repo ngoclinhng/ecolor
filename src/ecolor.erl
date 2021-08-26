@@ -231,7 +231,67 @@ contruct_sgr_seq_from_style_test_() ->
              {?TS([blinking]),                 <<"\e[5m">>},
              {?TS([bold, italic]),             <<"\e[1;3m">>},
              {?TS([italic, bold]),             <<"\e[3;1m">>},
-             {?TS([bold, italic, underline]),  <<"\e[1;3;4m">>}
+             {?TS([bold, italic, underline]),  <<"\e[1;3;4m">>},
+
+             %% normal style, fix foreground, variable background
+             {?TFB([], black, black),   <<"\e[30;40m">>},
+             {?TFB([], black, red),     <<"\e[30;41m">>},
+             {?TFB([], black, green),   <<"\e[30;42m">>},
+             {?TFB([], black, yellow),  <<"\e[30;43m">>},
+             {?TFB([], black, blue),    <<"\e[30;44m">>},
+             {?TFB([], black, magenta), <<"\e[30;45m">>},
+             {?TFB([], black, cyan),    <<"\e[30;46m">>},
+             {?TFB([], black, white),   <<"\e[30;47m">>},
+             {?TFB([], black, default), <<"\e[30;49m">>},
+             {?TFB([], black, unset),   <<"\e[30m">>},
+
+             %% normal style, variable foreground, fix background
+             {?TFB([], black, black),   <<"\e[30;40m">>},
+             {?TFB([], red, black),     <<"\e[31;40m">>},
+             {?TFB([], green, black),   <<"\e[32;40m">>},
+             {?TFB([], yellow, black),  <<"\e[33;40m">>},
+             {?TFB([], blue, black),    <<"\e[34;40m">>},
+             {?TFB([], magenta, black), <<"\e[35;40m">>},
+             {?TFB([], cyan, black),    <<"\e[36;40m">>},
+             {?TFB([], white, black),   <<"\e[37;40m">>},
+             {?TFB([], default, black), <<"\e[39;40m">>},
+             {?TFB([], unset, black),   <<"\e[40m">>},
+
+             %% bold style, fix foreground, variable background
+             {?TFB([bold], black, black),   <<"\e[1;30;40m">>},
+             {?TFB([bold], black, red),     <<"\e[1;30;41m">>},
+             {?TFB([bold], black, green),   <<"\e[1;30;42m">>},
+             {?TFB([bold], black, yellow),  <<"\e[1;30;43m">>},
+             {?TFB([bold], black, blue),    <<"\e[1;30;44m">>},
+             {?TFB([bold], black, magenta), <<"\e[1;30;45m">>},
+             {?TFB([bold], black, cyan),    <<"\e[1;30;46m">>},
+             {?TFB([bold], black, white),   <<"\e[1;30;47m">>},
+             {?TFB([bold], black, default), <<"\e[1;30;49m">>},
+             {?TFB([bold], black, unset),   <<"\e[1;30m">>},
+
+             %% bold style, variable foreground, fix background
+             {?TFB([bold], black, black),   <<"\e[1;30;40m">>},
+             {?TFB([bold], red, black),     <<"\e[1;31;40m">>},
+             {?TFB([bold], green, black),   <<"\e[1;32;40m">>},
+             {?TFB([bold], yellow, black),  <<"\e[1;33;40m">>},
+             {?TFB([bold], blue, black),    <<"\e[1;34;40m">>},
+             {?TFB([bold], magenta, black), <<"\e[1;35;40m">>},
+             {?TFB([bold], cyan, black),    <<"\e[1;36;40m">>},
+             {?TFB([bold], white, black),   <<"\e[1;37;40m">>},
+             {?TFB([bold], default, black), <<"\e[1;39;40m">>},
+             {?TFB([bold], unset, black),   <<"\e[1;40m">>},
+
+             %% bold and underline style, variable fore, fix back
+             {?TFB([bold, underline], black, black),   <<"\e[1;4;30;40m">>},
+             {?TFB([bold, underline], red, black),     <<"\e[1;4;31;40m">>},
+             {?TFB([bold, underline], green, black),   <<"\e[1;4;32;40m">>},
+             {?TFB([bold, underline], yellow, black),  <<"\e[1;4;33;40m">>},
+             {?TFB([bold, underline], blue, black),    <<"\e[1;4;34;40m">>},
+             {?TFB([bold, underline], magenta, black), <<"\e[1;4;35;40m">>},
+             {?TFB([bold, underline], cyan, black),    <<"\e[1;4;36;40m">>},
+             {?TFB([bold, underline], white, black),   <<"\e[1;4;37;40m">>},
+             {?TFB([bold, underline], default, black), <<"\e[1;4;39;40m">>},
+             {?TFB([bold, underline], unset, black),   <<"\e[1;4;40m">>}
             ],
     [?_assertEqual(E, sgr(I)) || {I, E} <- Tests].
 
