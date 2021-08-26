@@ -34,6 +34,29 @@ set_background_for_string_test_() ->
         ],
     [?_assertEqual(E, to_s(ecolor:set_background(C, S))) || {C, S, E} <- T].
 
+set_text_style_for_string_test_() ->
+    T = [
+         %% individual style
+         {bold,        "bold",      "\e[1mbold\e[0m"},
+         {[bold],      "bold",      "\e[1mbold\e[0m"},
+         {dim,         "dim",       "\e[2mdim\e[0m"},
+         {[dim],       "dim",       "\e[2mdim\e[0m"},
+         {italic,      "italic",    "\e[3mitalic\e[0m"},
+         {[italic],    "italic",    "\e[3mitalic\e[0m"},
+         {underline,   "underline", "\e[4munderline\e[0m"},
+         {[underline], "underline", "\e[4munderline\e[0m"},
+         {blinking,    "blinking",  "\e[5mblinking\e[0m"},
+         {[blinking],  "blinking",  "\e[5mblinking\e[0m"},
+
+         %% mix styles
+         {[bold, italic], "bold and italic", "\e[1;3mbold and italic\e[0m"},
+         {
+          [italic, underline], "italic and underline",
+          "\e[3;4mitalic and underline\e[0m"
+         }
+        ],
+    [?_assertEqual(E, to_s(ecolor:set_text_style(A, S))) || {A, S, E} <- T].
+
 %%
 %% HELPERS.
 %%
