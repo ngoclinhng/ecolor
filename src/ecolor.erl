@@ -109,8 +109,8 @@ sgr(#style{text_style = TS, foreground = FG, background = BG}) ->
 reset() ->
     sgr(?RESET_CODE).
 
-%% Returns text style sequence from the given list of styles.
--spec text_style([text_style()]) -> binary().
+%% Generates text style attribute(s) from the given list of styles.
+-spec text_style([text_style()]) -> sgr_attribute().
 text_style(Styles) ->
     M = fun(bold)      -> ?TEXT_STYLE_BOLD;
            (dim)       -> ?TEXT_STYLE_DIM;
@@ -122,8 +122,8 @@ text_style(Styles) ->
     List = lists:map(M, Styles),
     join_attributes(List).
 
-%% Returns foreground color sequence based on the given color code.
--spec foreground(color()) -> binary().
+%% Generates foreground color attribute from the given color code.
+-spec foreground(color()) -> sgr_attribute().
 foreground(black) ->
     ?FOREGROUND_BLACK;
 foreground(blue) ->
@@ -145,8 +145,8 @@ foreground(default) ->
 foreground(_) ->
     <<>>.
 
-%% Returns background color sequence based on the given color code.
--spec background(color()) -> binary().
+%% Generates background color attribute from the given color code.
+-spec background(color()) -> sgr_attribute().
 background(black) ->
     ?BACKGROUND_BLACK;
 background(blue) ->
