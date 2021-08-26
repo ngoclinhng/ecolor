@@ -295,6 +295,9 @@ contruct_sgr_seq_from_style_test_() ->
             ],
     [?_assertEqual(E, sgr(I)) || {I, E} <- Tests].
 
+reset_test() ->
+    ?assertEqual(<<"\e[0m">>, reset()).
+
 join_attributes_test_() ->
     Tests = [
              {[], <<>>},
