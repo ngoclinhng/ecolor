@@ -139,7 +139,25 @@ foreground(_) ->
 
 %% Returns background color sequence based on the given color code.
 -spec background(color()) -> binary().
-background(_Color) ->
+background(black) ->
+    ?BACKGROUND_BLACK;
+background(blue) ->
+    ?BACKGROUND_BLUE;
+background(cyan) ->
+    ?BACKGROUND_CYAN;
+background(green) ->
+    ?BACKGROUND_GREEN;
+background(magenta) ->
+    ?BACKGROUND_MAGENTA;
+background(red) ->
+    ?BACKGROUND_RED;
+background(white) ->
+    ?BACKGROUND_WHITE;
+background(yellow) ->
+    ?BACKGROUND_YELLOW;
+background(default) ->
+    ?BACKGROUND_DEFAULT;
+background(_) ->
     <<>>.
 
 %% Joins several Select Graphic Rendition (SGR) attributes together
@@ -182,7 +200,19 @@ contruct_sgr_seq_from_style_test_() ->
              {?FG(cyan),      <<"\e[36m">>},
              {?FG(white),     <<"\e[37m">>},
              {?FG(default),   <<"\e[39m">>},
-             {?FG(unset),     <<>>}
+             {?FG(unset),     <<>>},
+
+             %% background color
+             {?BG(black),     <<"\e[40m">>},
+             {?BG(red),       <<"\e[41m">>},
+             {?BG(green),     <<"\e[42m">>},
+             {?BG(yellow),    <<"\e[43m">>},
+             {?BG(blue),      <<"\e[44m">>},
+             {?BG(magenta),   <<"\e[45m">>},
+             {?BG(cyan),      <<"\e[46m">>},
+             {?BG(white),     <<"\e[47m">>},
+             {?BG(default),   <<"\e[49m">>},
+             {?BG(unset),     <<>>}
             ],
     [?_assertEqual(E, sgr(I)) || {I, E} <- Tests].
 
