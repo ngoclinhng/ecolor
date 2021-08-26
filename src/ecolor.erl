@@ -89,7 +89,7 @@ set_style(Style, String) when is_record(Style, style) ->
 
 %% Constructs a SGR sequence from the given style, the given list of
 %% attributes.
--spec sgr(binary() | [binary()] | style()) -> binary().
+-spec sgr(sgr_attribute() | [sgr_attribute()] | style()) -> binary().
 sgr(<<>>) ->
     <<>>;
 sgr(Attributes) when is_binary(Attributes) ->
