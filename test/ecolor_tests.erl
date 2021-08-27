@@ -25,7 +25,9 @@ set_foreground_for_string_test_() ->
          {16,  "test", "\e[38;5;16mtest\e[0m"},
          {231, "test", "\e[38;5;231mtest\e[0m"},
          {232, "test", "\e[38;5;232mtest\e[0m"},
-         {255, "test", "\e[38;5;255mtest\e[0m"}
+         {255, "test", "\e[38;5;255mtest\e[0m"},
+         {-1,  "test", "test"},
+         {256, "test", "test"}
         ],
     [?_assertEqual(E, to_s(ecolor:set_foreground(C, S))) || {C, S, E} <- T].
 
@@ -50,7 +52,9 @@ set_background_for_string_test_() ->
          {16,  "test", "\e[48;5;16mtest\e[0m"},
          {231, "test", "\e[48;5;231mtest\e[0m"},
          {232, "test", "\e[48;5;232mtest\e[0m"},
-         {255, "test", "\e[48;5;255mtest\e[0m"}
+         {255, "test", "\e[48;5;255mtest\e[0m"},
+         {-1,  "test", "test"},
+         {256, "test", "test"}
         ],
     [?_assertEqual(E, to_s(ecolor:set_background(C, S))) || {C, S, E} <- T].
 
