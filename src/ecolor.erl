@@ -12,6 +12,9 @@
 %% TYPES.
 %%
 
+-type rgb() :: [byte()].
+-type hex() :: string().
+
 -type color() :: black
                | blue
                | cyan
@@ -22,7 +25,8 @@
                | yellow
                | default
                | byte()
-               | [byte()]
+               | rgb()
+               | hex()
                | unset.
 
 -type text_style() :: bold
@@ -152,6 +156,9 @@ foreground([R, G, B]) when is_integer(R), R >= 0, R =< 255,
                            is_integer(B), B >= 0, B =< 255 ->
     [Rb, Gb, Bb] = lists:map(fun integer_to_binary/1, [R, G, B]),
     join_attributes([<<"38">>, <<"2">>, Rb, Gb, Bb]);
+foreground(Hex) when is_list(Hex) ->
+    RGB = hex_to_rgb(Hex),
+    foreground(RGB);
 foreground(_) ->
     <<>>.
 
@@ -183,6 +190,9 @@ background([R, G, B]) when is_integer(R), R >= 0, R =< 255,
                            is_integer(B), B >= 0, B =< 255 ->
     [Rb, Gb, Bb] = lists:map(fun integer_to_binary/1, [R, G, B]),
     join_attributes([<<"48">>, <<"2">>, Rb, Gb, Bb]);
+background(Hex) when is_list(Hex) ->
+    RGB = hex_to_rgb(Hex),
+    background(RGB);
 background(_) ->
     <<>>.
 
@@ -198,6 +208,16 @@ join_attributes(Attributes) ->
                 <<Acc/binary, ?ATTRIBUTE_SEPARATOR/binary, Elem/binary>>
         end,
     lists:foldl(R, <<>>, Attributes).
+
+%% Converts hex to rgb.
+-spec hex_to_rgb(string()) -> [byte()].
+hex_to_rgb([$# | Rest]) ->
+    hex_to_rgb(Rest);
+hex_to_rgb([R1, R2, G1, G2, B1, B2]) ->
+    R = list_to_integer([R1, R2], 16),
+    G = list_to_integer([G1, G2], 16),
+    B = list_to_integer([B1, B2], 16),
+    [R, G, B].
 
 %%
 %% TESTS.
@@ -240,6 +260,18 @@ contruct_sgr_seq_from_style_test_() ->
              {?FG([0, 255, 0]),     <<"\e[38;2;0;255;0m">>},
              {?FG([0, 0, 255]),     <<"\e[38;2;0;0;255m">>},
              {?FG([255, 255, 255]), <<"\e[38;2;255;255;255m">>},
+             {?FG("000000"),        <<"\e[38;2;0;0;0m">>},
+             {?FG("#000000"),       <<"\e[38;2;0;0;0m">>},
+             {?FG("ffffff"),        <<"\e[38;2;255;255;255m">>},
+             {?FG("FFFFFF"),        <<"\e[38;2;255;255;255m">>},
+             {?FG("#ffffff"),       <<"\e[38;2;255;255;255m">>},
+             {?FG("#FFFFFF"),       <<"\e[38;2;255;255;255m">>},
+             {?FG("f5f6f7"),        <<"\e[38;2;245;246;247m">>},
+             {?FG("F5F6F7"),        <<"\e[38;2;245;246;247m">>},
+             {?FG("#f5f6f7"),       <<"\e[38;2;245;246;247m">>},
+             {?FG("#F5F6F7"),       <<"\e[38;2;245;246;247m">>},
+             {?FG("444950"),        <<"\e[38;2;68;73;80m">>},
+             {?FG("#444950"),       <<"\e[38;2;68;73;80m">>},
 
              %% background color
              {?BG(black),           <<"\e[40m">>},
@@ -265,6 +297,18 @@ contruct_sgr_seq_from_style_test_() ->
              {?BG([0, 255, 0]),     <<"\e[48;2;0;255;0m">>},
              {?BG([0, 0, 255]),     <<"\e[48;2;0;0;255m">>},
              {?BG([255, 255, 255]), <<"\e[48;2;255;255;255m">>},
+             {?BG("000000"),        <<"\e[48;2;0;0;0m">>},
+             {?BG("#000000"),       <<"\e[48;2;0;0;0m">>},
+             {?BG("ffffff"),        <<"\e[48;2;255;255;255m">>},
+             {?BG("FFFFFF"),        <<"\e[48;2;255;255;255m">>},
+             {?BG("#ffffff"),       <<"\e[48;2;255;255;255m">>},
+             {?BG("#FFFFFF"),       <<"\e[48;2;255;255;255m">>},
+             {?BG("f5f6f7"),        <<"\e[48;2;245;246;247m">>},
+             {?BG("F5F6F7"),        <<"\e[48;2;245;246;247m">>},
+             {?BG("#f5f6f7"),       <<"\e[48;2;245;246;247m">>},
+             {?BG("#F5F6F7"),       <<"\e[48;2;245;246;247m">>},
+             {?BG("444950"),        <<"\e[48;2;68;73;80m">>},
+             {?BG("#444950"),       <<"\e[48;2;68;73;80m">>},
 
              %% text style
              {?TS([]),                         <<>>},
@@ -354,5 +398,30 @@ join_attributes_test_() ->
              {[<<>>, <<"37">>, <<>>], <<"37">>}
             ],
     [?_assertEqual(E, join_attributes(I)) || {I, E} <- Tests].
+
+hex_to_rgb_test_() ->
+    Tests = [
+             {"000000",  [0, 0, 0]},
+             {"#000000", [0, 0, 0]},
+
+             {"ffffff",  [255, 255, 255]},
+             {"FFFFFF",  [255, 255, 255]},
+             {"#ffffff", [255, 255, 255]},
+             {"#FFFFFF", [255, 255, 255]},
+
+             {"f5f6f7",  [245, 246, 247]},
+             {"F5F6F7",  [245, 246, 247]},
+             {"#f5f6f7", [245, 246, 247]},
+             {"#F5F6F7", [245, 246, 247]},
+
+             {"00bfff",  [0, 191, 255]},
+             {"00BFFF",  [0, 191, 255]},
+             {"#00bfff", [0, 191, 255]},
+             {"#00BFFF", [0, 191, 255]},
+
+             {"444950",  [68, 73, 80]},
+             {"#444950", [68, 73, 80]}
+            ],
+    [?_assertEqual(E, hex_to_rgb(I)) || {I, E} <- Tests].
 
 -endif.
