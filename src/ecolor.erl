@@ -22,6 +22,7 @@
                | yellow
                | default
                | byte()
+               | [0..5]
                | unset.
 
 -type text_style() :: bold
@@ -146,6 +147,11 @@ foreground(default) ->
 foreground(Byte) when is_integer(Byte), Byte >= 0, Byte =< 255 ->
     Bin = integer_to_binary(Byte),
     join_attributes([<<"38">>, <<"5">>, Bin]);
+foreground([R, G, B]) when is_integer(R), R >= 0, R =< 5,
+                           is_integer(G), G >= 0, G =< 5,
+                           is_integer(B), B >= 0, B =< 5 ->
+    Byte = 16 + (36 * R) + (6 * G) + B,
+    foreground(Byte);
 foreground(_) ->
     <<>>.
 
@@ -172,6 +178,11 @@ background(default) ->
 background(Byte) when is_integer(Byte), Byte >= 0, Byte =< 255 ->
     Bin = integer_to_binary(Byte),
     join_attributes([<<"48">>, <<"5">>, Bin]);
+background([R, G, B]) when is_integer(R), R >= 0, R =< 5,
+                           is_integer(G), G >= 0, G =< 5,
+                           is_integer(B), B >= 0, B =< 5 ->
+    Byte = 16 + (36 * R) + (6 * G) + B,
+    background(Byte);
 background(_) ->
     <<>>.
 
@@ -224,6 +235,12 @@ contruct_sgr_seq_from_style_test_() ->
              {?FG(231),       <<"\e[38;5;231m">>},
              {?FG(232),       <<"\e[38;5;232m">>},
              {?FG(255),       <<"\e[38;5;255m">>},
+             {?FG([0, 0, 0]), <<"\e[38;5;16m">>},
+             {?FG([1, 1, 1]), <<"\e[38;5;59m">>},
+             {?FG([2, 2, 2]), <<"\e[38;5;102m">>},
+             {?FG([3, 3, 3]), <<"\e[38;5;145m">>},
+             {?FG([4, 4, 4]), <<"\e[38;5;188m">>},
+             {?FG([5, 5, 5]), <<"\e[38;5;231m">>},
 
              %% background color
              {?BG(black),     <<"\e[40m">>},
@@ -244,6 +261,12 @@ contruct_sgr_seq_from_style_test_() ->
              {?BG(231),       <<"\e[48;5;231m">>},
              {?BG(232),       <<"\e[48;5;232m">>},
              {?BG(255),       <<"\e[48;5;255m">>},
+             {?BG([0, 0, 0]), <<"\e[48;5;16m">>},
+             {?BG([1, 1, 1]), <<"\e[48;5;59m">>},
+             {?BG([2, 2, 2]), <<"\e[48;5;102m">>},
+             {?BG([3, 3, 3]), <<"\e[48;5;145m">>},
+             {?BG([4, 4, 4]), <<"\e[48;5;188m">>},
+             {?BG([5, 5, 5]), <<"\e[48;5;231m">>},
 
              %% text style
              {?TS([]),                         <<>>},
