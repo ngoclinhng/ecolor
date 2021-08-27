@@ -29,14 +29,12 @@ set_foreground_for_string_test_() ->
          {-1,  "test", "test"},
          {256, "test", "test"},
 
-         %% 8-bit rgb
-         {[0, 0, 0], "test", "\e[38;5;16mtest\e[0m"},
-         {[1, 1, 1], "test", "\e[38;5;59mtest\e[0m"},
-         {[2, 2, 2], "test", "\e[38;5;102mtest\e[0m"},
-         {[3, 3, 3], "test", "\e[38;5;145mtest\e[0m"},
-         {[4, 4, 4], "test", "\e[38;5;188mtest\e[0m"},
-         {[5, 5, 5], "test", "\e[38;5;231mtest\e[0m"},
-         {[1, 2, 3], "test", "\e[38;5;67mtest\e[0m"}
+         %% 24-bit rgb
+         {[0, 0, 0],       "test", "\e[38;2;0;0;0mtest\e[0m"},
+         {[255, 0, 0],     "test", "\e[38;2;255;0;0mtest\e[0m"},
+         {[0, 255, 0],     "test", "\e[38;2;0;255;0mtest\e[0m"},
+         {[0, 0, 255],     "test", "\e[38;2;0;0;255mtest\e[0m"},
+         {[255, 255, 255], "test", "\e[38;2;255;255;255mtest\e[0m"}
         ],
     [?_assertEqual(E, to_s(ecolor:set_foreground(C, S))) || {C, S, E} <- T].
 
@@ -65,14 +63,12 @@ set_background_for_string_test_() ->
          {-1,  "test", "test"},
          {256, "test", "test"},
 
-         %% 8-bit rgb
-         {[0, 0, 0], "test", "\e[48;5;16mtest\e[0m"},
-         {[1, 1, 1], "test", "\e[48;5;59mtest\e[0m"},
-         {[2, 2, 2], "test", "\e[48;5;102mtest\e[0m"},
-         {[3, 3, 3], "test", "\e[48;5;145mtest\e[0m"},
-         {[4, 4, 4], "test", "\e[48;5;188mtest\e[0m"},
-         {[5, 5, 5], "test", "\e[48;5;231mtest\e[0m"},
-         {[1, 2, 3], "test", "\e[48;5;67mtest\e[0m"}
+         %% 24-bit rgb
+         {[0, 0, 0],       "test", "\e[48;2;0;0;0mtest\e[0m"},
+         {[255, 0, 0],     "test", "\e[48;2;255;0;0mtest\e[0m"},
+         {[0, 255, 0],     "test", "\e[48;2;0;255;0mtest\e[0m"},
+         {[0, 0, 255],     "test", "\e[48;2;0;0;255mtest\e[0m"},
+         {[255, 255, 255], "test", "\e[48;2;255;255;255mtest\e[0m"}
         ],
     [?_assertEqual(E, to_s(ecolor:set_background(C, S))) || {C, S, E} <- T].
 

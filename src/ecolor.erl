@@ -22,7 +22,7 @@
                | yellow
                | default
                | byte()
-               | [0..5]
+               | [byte()]
                | unset.
 
 -type text_style() :: bold
@@ -147,11 +147,11 @@ foreground(default) ->
 foreground(Byte) when is_integer(Byte), Byte >= 0, Byte =< 255 ->
     Bin = integer_to_binary(Byte),
     join_attributes([<<"38">>, <<"5">>, Bin]);
-foreground([R, G, B]) when is_integer(R), R >= 0, R =< 5,
-                           is_integer(G), G >= 0, G =< 5,
-                           is_integer(B), B >= 0, B =< 5 ->
-    Byte = 16 + (36 * R) + (6 * G) + B,
-    foreground(Byte);
+foreground([R, G, B]) when is_integer(R), R >= 0, R =< 255,
+                           is_integer(G), G >= 0, G =< 255,
+                           is_integer(B), B >= 0, B =< 255 ->
+    [Rb, Gb, Bb] = lists:map(fun integer_to_binary/1, [R, G, B]),
+    join_attributes([<<"38">>, <<"2">>, Rb, Gb, Bb]);
 foreground(_) ->
     <<>>.
 
@@ -178,11 +178,11 @@ background(default) ->
 background(Byte) when is_integer(Byte), Byte >= 0, Byte =< 255 ->
     Bin = integer_to_binary(Byte),
     join_attributes([<<"48">>, <<"5">>, Bin]);
-background([R, G, B]) when is_integer(R), R >= 0, R =< 5,
-                           is_integer(G), G >= 0, G =< 5,
-                           is_integer(B), B >= 0, B =< 5 ->
-    Byte = 16 + (36 * R) + (6 * G) + B,
-    background(Byte);
+background([R, G, B]) when is_integer(R), R >= 0, R =< 255,
+                           is_integer(G), G >= 0, G =< 255,
+                           is_integer(B), B >= 0, B =< 255 ->
+    [Rb, Gb, Bb] = lists:map(fun integer_to_binary/1, [R, G, B]),
+    join_attributes([<<"48">>, <<"2">>, Rb, Gb, Bb]);
 background(_) ->
     <<>>.
 
@@ -217,56 +217,54 @@ join_attributes(Attributes) ->
 contruct_sgr_seq_from_style_test_() ->
     Tests = [
              %% foreground color
-             {?FG(black),     <<"\e[30m">>},
-             {?FG(red),       <<"\e[31m">>},
-             {?FG(green),     <<"\e[32m">>},
-             {?FG(yellow),    <<"\e[33m">>},
-             {?FG(blue),      <<"\e[34m">>},
-             {?FG(magenta),   <<"\e[35m">>},
-             {?FG(cyan),      <<"\e[36m">>},
-             {?FG(white),     <<"\e[37m">>},
-             {?FG(default),   <<"\e[39m">>},
-             {?FG(unset),     <<>>},
-             {?FG(0),         <<"\e[38;5;0m">>},
-             {?FG(7),         <<"\e[38;5;7m">>},
-             {?FG(8),         <<"\e[38;5;8m">>},
-             {?FG(15),        <<"\e[38;5;15m">>},
-             {?FG(16),        <<"\e[38;5;16m">>},
-             {?FG(231),       <<"\e[38;5;231m">>},
-             {?FG(232),       <<"\e[38;5;232m">>},
-             {?FG(255),       <<"\e[38;5;255m">>},
-             {?FG([0, 0, 0]), <<"\e[38;5;16m">>},
-             {?FG([1, 1, 1]), <<"\e[38;5;59m">>},
-             {?FG([2, 2, 2]), <<"\e[38;5;102m">>},
-             {?FG([3, 3, 3]), <<"\e[38;5;145m">>},
-             {?FG([4, 4, 4]), <<"\e[38;5;188m">>},
-             {?FG([5, 5, 5]), <<"\e[38;5;231m">>},
+             {?FG(black),           <<"\e[30m">>},
+             {?FG(red),             <<"\e[31m">>},
+             {?FG(green),           <<"\e[32m">>},
+             {?FG(yellow),          <<"\e[33m">>},
+             {?FG(blue),            <<"\e[34m">>},
+             {?FG(magenta),         <<"\e[35m">>},
+             {?FG(cyan),            <<"\e[36m">>},
+             {?FG(white),           <<"\e[37m">>},
+             {?FG(default),         <<"\e[39m">>},
+             {?FG(unset),           <<>>},
+             {?FG(0),               <<"\e[38;5;0m">>},
+             {?FG(7),               <<"\e[38;5;7m">>},
+             {?FG(8),               <<"\e[38;5;8m">>},
+             {?FG(15),              <<"\e[38;5;15m">>},
+             {?FG(16),              <<"\e[38;5;16m">>},
+             {?FG(231),             <<"\e[38;5;231m">>},
+             {?FG(232),             <<"\e[38;5;232m">>},
+             {?FG(255),             <<"\e[38;5;255m">>},
+             {?FG([0, 0, 0]),       <<"\e[38;2;0;0;0m">>},
+             {?FG([255, 0, 0]),     <<"\e[38;2;255;0;0m">>},
+             {?FG([0, 255, 0]),     <<"\e[38;2;0;255;0m">>},
+             {?FG([0, 0, 255]),     <<"\e[38;2;0;0;255m">>},
+             {?FG([255, 255, 255]), <<"\e[38;2;255;255;255m">>},
 
              %% background color
-             {?BG(black),     <<"\e[40m">>},
-             {?BG(red),       <<"\e[41m">>},
-             {?BG(green),     <<"\e[42m">>},
-             {?BG(yellow),    <<"\e[43m">>},
-             {?BG(blue),      <<"\e[44m">>},
-             {?BG(magenta),   <<"\e[45m">>},
-             {?BG(cyan),      <<"\e[46m">>},
-             {?BG(white),     <<"\e[47m">>},
-             {?BG(default),   <<"\e[49m">>},
-             {?BG(unset),     <<>>},
-             {?BG(0),         <<"\e[48;5;0m">>},
-             {?BG(7),         <<"\e[48;5;7m">>},
-             {?BG(8),         <<"\e[48;5;8m">>},
-             {?BG(15),        <<"\e[48;5;15m">>},
-             {?BG(16),        <<"\e[48;5;16m">>},
-             {?BG(231),       <<"\e[48;5;231m">>},
-             {?BG(232),       <<"\e[48;5;232m">>},
-             {?BG(255),       <<"\e[48;5;255m">>},
-             {?BG([0, 0, 0]), <<"\e[48;5;16m">>},
-             {?BG([1, 1, 1]), <<"\e[48;5;59m">>},
-             {?BG([2, 2, 2]), <<"\e[48;5;102m">>},
-             {?BG([3, 3, 3]), <<"\e[48;5;145m">>},
-             {?BG([4, 4, 4]), <<"\e[48;5;188m">>},
-             {?BG([5, 5, 5]), <<"\e[48;5;231m">>},
+             {?BG(black),           <<"\e[40m">>},
+             {?BG(red),             <<"\e[41m">>},
+             {?BG(green),           <<"\e[42m">>},
+             {?BG(yellow),          <<"\e[43m">>},
+             {?BG(blue),            <<"\e[44m">>},
+             {?BG(magenta),         <<"\e[45m">>},
+             {?BG(cyan),            <<"\e[46m">>},
+             {?BG(white),           <<"\e[47m">>},
+             {?BG(default),         <<"\e[49m">>},
+             {?BG(unset),           <<>>},
+             {?BG(0),               <<"\e[48;5;0m">>},
+             {?BG(7),               <<"\e[48;5;7m">>},
+             {?BG(8),               <<"\e[48;5;8m">>},
+             {?BG(15),              <<"\e[48;5;15m">>},
+             {?BG(16),              <<"\e[48;5;16m">>},
+             {?BG(231),             <<"\e[48;5;231m">>},
+             {?BG(232),             <<"\e[48;5;232m">>},
+             {?BG(255),             <<"\e[48;5;255m">>},
+             {?BG([0, 0, 0]),       <<"\e[48;2;0;0;0m">>},
+             {?BG([255, 0, 0]),     <<"\e[48;2;255;0;0m">>},
+             {?BG([0, 255, 0]),     <<"\e[48;2;0;255;0m">>},
+             {?BG([0, 0, 255]),     <<"\e[48;2;0;0;255m">>},
+             {?BG([255, 255, 255]), <<"\e[48;2;255;255;255m">>},
 
              %% text style
              {?TS([]),                         <<>>},
