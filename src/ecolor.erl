@@ -21,6 +21,7 @@
                | white
                | yellow
                | default
+               | byte()
                | unset.
 
 -type text_style() :: bold
@@ -142,6 +143,9 @@ foreground(yellow) ->
     ?FOREGROUND_YELLOW;
 foreground(default) ->
     ?FOREGROUND_DEFAULT;
+foreground(Byte) when is_integer(Byte), Byte >= 0, Byte =< 255 ->
+    Bin = integer_to_binary(Byte),
+    join_attributes([<<"38">>, <<"5">>, Bin]);
 foreground(_) ->
     <<>>.
 
@@ -209,6 +213,14 @@ contruct_sgr_seq_from_style_test_() ->
              {?FG(white),     <<"\e[37m">>},
              {?FG(default),   <<"\e[39m">>},
              {?FG(unset),     <<>>},
+             {?FG(0),         <<"\e[38;5;0m">>},
+             {?FG(7),         <<"\e[38;5;7m">>},
+             {?FG(8),         <<"\e[38;5;8m">>},
+             {?FG(15),        <<"\e[38;5;15m">>},
+             {?FG(16),        <<"\e[38;5;16m">>},
+             {?FG(231),       <<"\e[38;5;231m">>},
+             {?FG(232),       <<"\e[38;5;232m">>},
+             {?FG(255),       <<"\e[38;5;255m">>},
 
              %% background color
              {?BG(black),     <<"\e[40m">>},
