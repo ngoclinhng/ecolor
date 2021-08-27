@@ -15,7 +15,17 @@ set_foreground_for_string_test_() ->
          {cyan,    "cyan",    "\e[36mcyan\e[0m"},
          {white,   "white",   "\e[37mwhite\e[0m"},
          {default, "default", "\e[39mdefault\e[0m"},
-         {unset,   "unset",   "unset"}
+         {unset,   "unset",   "unset"},
+
+         %% 8-bit integer color
+         {0,   "test", "\e[38;5;0mtest\e[0m"},
+         {7,   "test", "\e[38;5;7mtest\e[0m"},
+         {8,   "test", "\e[38;5;8mtest\e[0m"},
+         {15,  "test", "\e[38;5;15mtest\e[0m"},
+         {16,  "test", "\e[38;5;16mtest\e[0m"},
+         {231, "test", "\e[38;5;231mtest\e[0m"},
+         {232, "test", "\e[38;5;232mtest\e[0m"},
+         {255, "test", "\e[38;5;255mtest\e[0m"}
         ],
     [?_assertEqual(E, to_s(ecolor:set_foreground(C, S))) || {C, S, E} <- T].
 
@@ -30,7 +40,17 @@ set_background_for_string_test_() ->
          {cyan,    "cyan",    "\e[46mcyan\e[0m"},
          {white,   "white",   "\e[47mwhite\e[0m"},
          {default, "default", "\e[49mdefault\e[0m"},
-         {unset,   "unset",   "unset"}
+         {unset,   "unset",   "unset"},
+
+         %% 8-bit integer color
+         {0,   "test", "\e[48;5;0mtest\e[0m"},
+         {7,   "test", "\e[48;5;7mtest\e[0m"},
+         {8,   "test", "\e[48;5;8mtest\e[0m"},
+         {15,  "test", "\e[48;5;15mtest\e[0m"},
+         {16,  "test", "\e[48;5;16mtest\e[0m"},
+         {231, "test", "\e[48;5;231mtest\e[0m"},
+         {232, "test", "\e[48;5;232mtest\e[0m"},
+         {255, "test", "\e[48;5;255mtest\e[0m"}
         ],
     [?_assertEqual(E, to_s(ecolor:set_background(C, S))) || {C, S, E} <- T].
 
