@@ -1,8 +1,7 @@
 -module(ecolor_tests).
 -include_lib("eunit/include/eunit.hrl").
 
-%% -define(TEST_STRING, "test").
-%% -define(TEST_IODATA, [<<"t">>, "e", 115, [[<<"t">>]]]).
+-define(IODATA, [<<"t">>, "e", 115, [[<<"t">>]]]).
 
 set_foreground_for_string_test_() ->
     T = [
@@ -52,6 +51,55 @@ set_foreground_for_string_test_() ->
         ],
     [?_assertEqual(E, to_s(ecolor:set_foreground(C, S))) || {C, S, E} <- T].
 
+set_foreground_for_iodata_test_() ->
+    T = [
+         {black,   "\e[30mtest\e[0m"},
+         {red,     "\e[31mtest\e[0m"},
+         {green,   "\e[32mtest\e[0m"},
+         {yellow,  "\e[33mtest\e[0m"},
+         {blue,    "\e[34mtest\e[0m"},
+         {magenta, "\e[35mtest\e[0m"},
+         {cyan,    "\e[36mtest\e[0m"},
+         {white,   "\e[37mtest\e[0m"},
+         {default, "\e[39mtest\e[0m"},
+         {unset,   "test"},
+
+         %% 8-bit integer color
+         {0,   "\e[38;5;0mtest\e[0m"},
+         {7,   "\e[38;5;7mtest\e[0m"},
+         {8,   "\e[38;5;8mtest\e[0m"},
+         {15,  "\e[38;5;15mtest\e[0m"},
+         {16,  "\e[38;5;16mtest\e[0m"},
+         {231, "\e[38;5;231mtest\e[0m"},
+         {232, "\e[38;5;232mtest\e[0m"},
+         {255, "\e[38;5;255mtest\e[0m"},
+         {-1,  "test"},
+         {256, "test"},
+
+         %% 24-bit rgb
+         {[0, 0, 0],      "\e[38;2;0;0;0mtest\e[0m"},
+         {[255, 0, 0],     "\e[38;2;255;0;0mtest\e[0m"},
+         {[0, 255, 0],     "\e[38;2;0;255;0mtest\e[0m"},
+         {[0, 0, 255],     "\e[38;2;0;0;255mtest\e[0m"},
+         {[255, 255, 255], "\e[38;2;255;255;255mtest\e[0m"},
+
+         %% hex
+         {"000000",  "\e[38;2;0;0;0mtest\e[0m"},
+         {"#000000", "\e[38;2;0;0;0mtest\e[0m"},
+         {"ffffff",  "\e[38;2;255;255;255mtest\e[0m"},
+         {"FFFFFF",  "\e[38;2;255;255;255mtest\e[0m"},
+         {"#ffffff", "\e[38;2;255;255;255mtest\e[0m"},
+         {"#FFFFFF", "\e[38;2;255;255;255mtest\e[0m"},
+         {"f5f6f7",  "\e[38;2;245;246;247mtest\e[0m"},
+         {"F5F6F7",  "\e[38;2;245;246;247mtest\e[0m"},
+         {"#f5f6f7", "\e[38;2;245;246;247mtest\e[0m"},
+         {"#F5F6F7", "\e[38;2;245;246;247mtest\e[0m"},
+         {"444950",  "\e[38;2;68;73;80mtest\e[0m"},
+         {"#444950", "\e[38;2;68;73;80mtest\e[0m"}
+        ],
+    [?_assertEqual(E, to_s(ecolor:set_foreground(C, ?IODATA)))
+     || {C, E} <- T].
+
 set_background_for_string_test_() ->
     T = [
          {black,   "black",   "\e[40mblack\e[0m"},
@@ -99,6 +147,55 @@ set_background_for_string_test_() ->
          {"#444950", "hex", "\e[48;2;68;73;80mhex\e[0m"}
         ],
     [?_assertEqual(E, to_s(ecolor:set_background(C, S))) || {C, S, E} <- T].
+
+set_background_for_iodata_test_() ->
+    T = [
+         {black,   "\e[40mtest\e[0m"},
+         {red,     "\e[41mtest\e[0m"},
+         {green,   "\e[42mtest\e[0m"},
+         {yellow,  "\e[43mtest\e[0m"},
+         {blue,    "\e[44mtest\e[0m"},
+         {magenta, "\e[45mtest\e[0m"},
+         {cyan,    "\e[46mtest\e[0m"},
+         {white,   "\e[47mtest\e[0m"},
+         {default, "\e[49mtest\e[0m"},
+         {unset,   "test"},
+
+         %% 8-bit integer color
+         {0,   "\e[48;5;0mtest\e[0m"},
+         {7,   "\e[48;5;7mtest\e[0m"},
+         {8,   "\e[48;5;8mtest\e[0m"},
+         {15,  "\e[48;5;15mtest\e[0m"},
+         {16,  "\e[48;5;16mtest\e[0m"},
+         {231, "\e[48;5;231mtest\e[0m"},
+         {232, "\e[48;5;232mtest\e[0m"},
+         {255, "\e[48;5;255mtest\e[0m"},
+         {-1,  "test"},
+         {256, "test"},
+
+         %% 24-bit rgb
+         {[0, 0, 0],       "\e[48;2;0;0;0mtest\e[0m"},
+         {[255, 0, 0],     "\e[48;2;255;0;0mtest\e[0m"},
+         {[0, 255, 0],     "\e[48;2;0;255;0mtest\e[0m"},
+         {[0, 0, 255],     "\e[48;2;0;0;255mtest\e[0m"},
+         {[255, 255, 255], "\e[48;2;255;255;255mtest\e[0m"},
+
+         %% hex
+         {"000000",  "\e[48;2;0;0;0mtest\e[0m"},
+         {"#000000", "\e[48;2;0;0;0mtest\e[0m"},
+         {"ffffff",  "\e[48;2;255;255;255mtest\e[0m"},
+         {"FFFFFF",  "\e[48;2;255;255;255mtest\e[0m"},
+         {"#ffffff", "\e[48;2;255;255;255mtest\e[0m"},
+         {"#FFFFFF", "\e[48;2;255;255;255mtest\e[0m"},
+         {"f5f6f7",  "\e[48;2;245;246;247mtest\e[0m"},
+         {"F5F6F7",  "\e[48;2;245;246;247mtest\e[0m"},
+         {"#f5f6f7", "\e[48;2;245;246;247mtest\e[0m"},
+         {"#F5F6F7", "\e[48;2;245;246;247mtest\e[0m"},
+         {"444950",  "\e[48;2;68;73;80mtest\e[0m"},
+         {"#444950", "\e[48;2;68;73;80mtest\e[0m"}
+        ],
+    [?_assertEqual(E, to_s(ecolor:set_background(C, ?IODATA)))
+     || {C, E} <- T].
 
 set_text_style_for_string_test_() ->
     T = [
