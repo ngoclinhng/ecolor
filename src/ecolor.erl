@@ -42,21 +42,24 @@
 
 -type style() :: #style{}.
 -type sgr_attribute() :: binary().
+-type data() :: unicode:chardata() | iodata().
+-type data_or_style() :: data() | style().
+-type text_styles() :: text_style() | [text_style()].
 
 %%
 %% PUBLIC API.
 %%
 
-%% Applies the given foreground color to the given string or style.
--spec set_foreground(color(), string() | style()) -> string() | style().
+%% Applies the given foreground color to the given data or style.
+-spec set_foreground(color(), data_or_style()) -> data_or_style().
 set_foreground(Color, Style) when is_record(Style, style) ->
     Style#style{foreground = Color};
 set_foreground(Color, String) ->
     Style = #style{foreground = Color},
     set_style(Style, String).
 
-%% Applies the given background color to the given string or style.
--spec set_background(color(), string() | style()) -> string() | style().
+%% Applies the given background color to the given data or style.
+-spec set_background(color(), data_or_style()) -> data_or_style().
 set_background(Color, Style) when is_record(Style, style) ->
     Style#style{background = Color};
 set_background(Color, String) ->
@@ -64,10 +67,8 @@ set_background(Color, String) ->
     set_style(Style, String).
 
 %% Applies the given text style (or a list of text styles) to the given
-%% string or style.
--spec set_text_style(text_style() | [text_style()],
-                     string() | style()
-                    ) -> string() | style().
+%% data or style.
+-spec set_text_style(text_styles(), data_or_style()) -> data_or_style().
 set_text_style(S, Style) when is_atom(S), is_record(Style, style) ->
     Style#style{text_style = [S]};
 set_text_style(S, Style) when is_list(S), is_record(Style, style) ->
@@ -79,8 +80,8 @@ set_text_style(S, String) when is_list(S) ->
     Style = #style{text_style = S},
     set_style(Style, String).
 
-%% Applies the given style to the given string.
--spec set_style(style(), string()) -> string().
+%% Applies the given style to the given string data.
+-spec set_style(style(), data()) -> data().
 set_style(Style, String) when is_record(Style, style) ->
     case sgr(Style) of
         <<>> ->
