@@ -169,6 +169,9 @@ background(yellow) ->
     ?BACKGROUND_YELLOW;
 background(default) ->
     ?BACKGROUND_DEFAULT;
+background(Byte) when is_integer(Byte), Byte >= 0, Byte =< 255 ->
+    Bin = integer_to_binary(Byte),
+    join_attributes([<<"48">>, <<"5">>, Bin]);
 background(_) ->
     <<>>.
 
@@ -233,6 +236,14 @@ contruct_sgr_seq_from_style_test_() ->
              {?BG(white),     <<"\e[47m">>},
              {?BG(default),   <<"\e[49m">>},
              {?BG(unset),     <<>>},
+             {?BG(0),         <<"\e[48;5;0m">>},
+             {?BG(7),         <<"\e[48;5;7m">>},
+             {?BG(8),         <<"\e[48;5;8m">>},
+             {?BG(15),        <<"\e[48;5;15m">>},
+             {?BG(16),        <<"\e[48;5;16m">>},
+             {?BG(231),       <<"\e[48;5;231m">>},
+             {?BG(232),       <<"\e[48;5;232m">>},
+             {?BG(255),       <<"\e[48;5;255m">>},
 
              %% text style
              {?TS([]),                         <<>>},
