@@ -23,6 +23,7 @@ terminal output, namely:
    `blue`, `magenta`, `cyan`, `white`); [8-bit colors](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit) are supplied via their corresponding bytes (any
    value between `0` and `255`); [24-bit colors](https://en.wikipedia.org/wiki/ANSI_escape_code#24-bit) can be supplied via either a 3-element list
    `[R, G, B]` or a hex string (e.g., `#f5f6f7`, `f5f6f7`, `F5F6F7`).
+   **Note**: 24-bit colors (a.k.a RGB or true colors) are not widely supported.
 
    ```erlang
    io:format("This is ~s color~n", [ecolor:set_foreground(green, "green")]).
@@ -41,8 +42,8 @@ terminal output, namely:
   you want to set, and the second is either your text data or another style.
   Text style can be either one of the atoms `bold`, `dim`, `italic`,
   `underline`, and `blinking`, or a list of those atoms (e.g `[italic,
-  underline]`). **Note that**: except the `bold` format, other formats may not
-  be supported by [some terminals](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).
+  underline]`). **Note that**: except for the `bold` format, other formats
+  may not be supported by [some terminals](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).
 
   ```erlang
   io:format("This is ~s format~n", [ecolor:set_text_style(bold, "bold")]).
