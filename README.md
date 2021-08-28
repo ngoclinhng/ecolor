@@ -34,7 +34,8 @@ terminal output, namely:
    io:format("This is ~s 24-bit color~n", [ecolor:set_foreground([0, 43, 54], "rgb(0, 43, 54)")]).
    ```
 
-   ***Note**: 24-bit colors (a.k.a RGB or true colors) are not widely supported.*
+   ***Note**: 24-bit colors (a.k.a RGB or true colors) are not widely
+   supported.*
 
 - `set_background/2`: sets background color. Arguments are exactly the same
   as those of `set_foreground/2`.
@@ -43,8 +44,7 @@ terminal output, namely:
   you want to set, and the second is either your text data or another style.
   Text style can be either one of the atoms `bold`, `dim`, `italic`,
   `underline`, and `blinking`, or a list of those atoms (e.g `[italic,
-  underline]`). **Note that**: except for the `bold` format, other formats
-  may not be supported by [some terminals](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).
+  underline]`).
 
   ```erlang
   io:format("This is ~s format~n", [ecolor:set_text_style(bold, "bold")]).
@@ -52,3 +52,6 @@ terminal output, namely:
   %% This example may not work on some terminals.
   io:format("This is ~s format~n", [ecolor:set_text_style([italic, underline], "italic and underline")]).
   ```
+
+  ***Note**: except for the `bold` format, other formats may not be supported
+  by [some terminals](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).*
