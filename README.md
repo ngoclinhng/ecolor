@@ -15,7 +15,9 @@ Usage
 **ecolor** has only a handful of functions that help you decorate your
 terminal output, namely:
 
-- `set_foreground/2`: sets foregound color.
+- `set_foreground/2`: sets foregound color. The first argument is the color
+   you want to set, and the second argument is your text data (`string`,
+   `iodate`, etc...).
 
 - `set_background/2`: sets background color.
 
