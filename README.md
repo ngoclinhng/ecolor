@@ -34,7 +34,7 @@ terminal output, namely:
    io:format("This is ~s 24-bit color~n", [ecolor:set_foreground([0, 43, 54], "rgb(0, 43, 54)")]).
    ```
 
-   **Note**: 24-bit colors (a.k.a RGB or true colors) are not widely supported.
+   *Note: 24-bit colors (a.k.a RGB or true colors) are not widely supported.*
 
 - `set_background/2`: sets background color. Arguments are exactly the same
   as those of `set_foreground/2`.
