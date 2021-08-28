@@ -17,7 +17,9 @@ terminal output, namely:
 
 - `set_foreground/2`: sets foregound color. The first argument is the color
    you want to set, and the second argument is either your text data
-   (`string`, `iodata`, etc...) or another style.
+   (`string()`, `iodata()`, etc...) or another style. The eight standard
+   ANSI colors are supplied via corresponding atoms (`black`, `red`, `green`,
+   `yellow`, `blue`, `magenta`, `cyan`, `white`).
 
 - `set_background/2`: sets background color. Arguments are exactly the same
   as those of `set_foreground/2`.
