@@ -7,7 +7,7 @@ for your Erlang.
 Install
 -------
 
-    $ rebar3 compile
+    `{ecolor, {git,"https://github.com/ngoclinhng/ecolor", {branch, "main"}}}`
 
 Usage
 -----
@@ -57,7 +57,7 @@ terminal output, namely:
   by [some terminals](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).*
 
 - `new_style/0` and `set_style/2`: these two functions allow you add more
-   advanced styling to your text. Example:
+   advanced styling to your text.
 
    ```erlang
    %% bold, white text on red background.
