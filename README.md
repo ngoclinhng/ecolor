@@ -39,5 +39,13 @@ terminal output, namely:
 
 - `set_text_style/2`: sets text style. The first argument is the text style
   you want to set, and the second is either your text data or another style.
-  Text style can be one of the atoms `bold`, `dim`, `italic`, `underline`, and
-  `blinking`, or a list of those atoms (e.g `[italic, underline]`).
+  Text style can be either one of the atoms `bold`, `dim`, `italic`,
+  `underline`, and `blinking`, or a list of those atoms (e.g `[italic,
+  underline]`).
+
+  ```erlang
+  io:format("This is ~s format~n", [ecolor:set_text_style(bold, "bold")]).
+
+  %% This example may not work on some terminals.
+  io:format("This is ~s format~n", [ecolor:set_text_style([italic, underline], "italic and underline")]).
+  ```
