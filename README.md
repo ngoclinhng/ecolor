@@ -41,7 +41,8 @@ terminal output, namely:
   you want to set, and the second is either your text data or another style.
   Text style can be either one of the atoms `bold`, `dim`, `italic`,
   `underline`, and `blinking`, or a list of those atoms (e.g `[italic,
-  underline]`).
+  underline]`). Note that: except the `bold` format, [other formats may not
+  be supported by some terminals](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).
 
   ```erlang
   io:format("This is ~s format~n", [ecolor:set_text_style(bold, "bold")]).
