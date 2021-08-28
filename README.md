@@ -21,7 +21,8 @@ terminal output, namely:
    ANSI colors](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors) are
    supplied via the corresponding atoms (`black`, `red`, `green`, `yellow`,
    `blue`, `magenta`, `cyan`, `white`); [8-bit colors](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit) are supplied via their corresponding bytes (any
-   value between `0` and `255`).
+   value between `0` and `255`); [24-bit colors](https://en.wikipedia.org/wiki/ANSI_escape_code#24-bit) can be supplied via a 3-element list `[R, G, B]`, a
+   hex string (e.g., `#f5f6f7`, `f5f6f7`, `F5F6F7`).
 
 - `set_background/2`: sets background color. Arguments are exactly the same
   as those of `set_foreground/2`.
