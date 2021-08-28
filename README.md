@@ -61,9 +61,9 @@ terminal output, namely:
 
    ```erlang
    %% bold, white text on red background.
-   S0 = ecolor:new_style(),
-   S1 = ecolor:set_text_style(bold, S0),
-   S2 = ecolor:set_foreground(white, S1),
+   S0    = ecolor:new_style(),
+   S1    = ecolor:set_text_style(bold, S0),
+   S2    = ecolor:set_foreground(white, S1),
    Style = ecolor:set_background(red, S2).
 
    io:format("This is ~s style~n", [ecolor:set_style(Style, "bold, white text on red background")]).
