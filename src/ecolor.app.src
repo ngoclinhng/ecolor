@@ -1,5 +1,5 @@
 {application, ecolor,
- [{description, "An OTP library"},
+ [{description, "ANSI display attributes for your Erlang."},
   {vsn, "0.1.0"},
   {registered, []},
   {applications,
@@ -7,8 +7,8 @@
     stdlib
    ]},
   {env,[]},
-  {modules, []},
+  {modules, [ecolor]},
 
-  {licenses, ["Apache 2.0"]},
-  {links, []}
+  {licenses, ["MIT"]},
+  {links, [{"Github", "https://github.com/ngoclinhng/ecolor"}]}
  ]}.
