@@ -1,6 +1,7 @@
 -module(ecolor).
 
 -export([set_foreground/2, set_background/2, set_text_style/2]).
+-export([new_style/0, set_style/2]).
 
 -include("ecolor.hrl").
 
@@ -89,6 +90,11 @@ set_style(Style, String) when is_record(Style, style) ->
         Seq ->
             [Seq, String, reset()]
     end.
+
+%% Returns default style record.
+-spec new_style() -> style().
+new_style() ->
+    #style{}.
 
 %%
 %% HELPERS.

@@ -220,6 +220,38 @@ set_text_style_for_string_test_() ->
         ],
     [?_assertEqual(E, to_s(ecolor:set_text_style(A, S))) || {A, S, E} <- T].
 
+
+set_mix_style_test_() ->
+    [
+     fun normal_white_text_on_blue_background/0,
+     fun italic_and_underline_text/0,
+     fun decorated_white_text_on_blue_background/0
+    ].
+
+normal_white_text_on_blue_background() ->
+    S = ecolor:new_style(),
+    S1 = ecolor:set_foreground(white, S),
+    S2 = ecolor:set_background(blue, S1),
+    Expected = "\e[37;44mwhite text on blue\e[0m",
+    Output = ecolor:set_style(S2, "white text on blue"),
+    ?assertEqual(Expected, to_s(Output)).
+
+italic_and_underline_text() ->
+    S = ecolor:new_style(),
+    S1 = ecolor:set_text_style([italic, underline], S),
+    Expected = "\e[3;4mitalic and underline\e[0m",
+    Output = ecolor:set_style(S1, "italic and underline"),
+    ?assertEqual(Expected, to_s(Output)).
+
+decorated_white_text_on_blue_background() ->
+    S = ecolor:new_style(),
+    S1 = ecolor:set_foreground(white, S),
+    S2 = ecolor:set_background(blue, S1),
+    S3 = ecolor:set_text_style([italic, underline], S2),
+    Expected = "\e[3;4;37;44mdecorated white text on blue\e[0m",
+    Output = ecolor:set_style(S3, "decorated white text on blue"),
+    ?assertEqual(Expected, to_s(Output)).
+
 %%
 %% HELPERS.
 %%
