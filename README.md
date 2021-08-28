@@ -24,7 +24,8 @@ terminal output, namely:
    value between `0` and `255`); [24-bit colors](https://en.wikipedia.org/wiki/ANSI_escape_code#24-bit) can be supplied via either a 3-element list
    `[R, G, B]` or a hex string (e.g., `#f5f6f7`, `f5f6f7`, `F5F6F7`).
 
-   ```erlang   
+   ```erlang
+   io:format("This is ~s color~n", [ecolor:set_foreground(green, "green")]).
    io:format("This is ~s 8-bit color~n", [ecolor:set_foreground(120, "greenish")]).   
    ```
 
