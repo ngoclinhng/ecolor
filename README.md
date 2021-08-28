@@ -26,7 +26,12 @@ terminal output, namely:
 
    ```erlang
    io:format("This is ~s color~n", [ecolor:set_foreground(green, "green")]).
-   io:format("This is ~s 8-bit color~n", [ecolor:set_foreground(120, "greenish")]).   
+   io:format("This is ~s 8-bit color~n", [ecolor:set_foreground(120, "greenish")]).
+
+   %% The following three examples may not be supported by some terminal.
+   io:format("This is ~s 24-bit color~n", [ecolor:set_foreground("#002B36", "#002B36")]).
+   io:format("This is ~s 24-bit color~n", [ecolor:set_foreground("002B36", "#002B36")]).
+   io:format("This is ~s 24-bit color~n", [ecolor:set_foreground([0, 43, 54], "rgb(0, 43, 54)")]).
    ```
 
 - `set_background/2`: sets background color. Arguments are exactly the same
