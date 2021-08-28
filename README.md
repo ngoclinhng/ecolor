@@ -7,7 +7,9 @@ for your Erlang.
 Install
 -------
 
-    `{ecolor, {git,"https://github.com/ngoclinhng/ecolor", {branch, "main"}}}`
+Add the following line to the `deps` list in your project `rebar.config` file.
+    
+    {ecolor, {git,"https://github.com/ngoclinhng/ecolor", {branch, "main"}}}
 
 Usage
 -----
