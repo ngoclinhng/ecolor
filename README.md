@@ -11,3 +11,12 @@ Install
 
 Usage
 -----
+
+**ecolor** has only a handful of functions that help you decorate your
+terminal output, namely:
+
+- `set_foreground/2`: sets foregound color.
+
+- `set_background/2`: sets background color.
+
+- `set_text_style/2`: sets text style.
