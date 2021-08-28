@@ -22,7 +22,7 @@ terminal output, namely:
    supplied via the corresponding atoms (`black`, `red`, `green`, `yellow`,
    `blue`, `magenta`, `cyan`, `white`); [8-bit colors](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit) are supplied via their corresponding bytes (any
    value between `0` and `255`); [24-bit colors](https://en.wikipedia.org/wiki/ANSI_escape_code#24-bit) can be supplied via either a 3-element list
-   `[R, G, B]` or a hex string (e.g., `#f5f6f7`, `f5f6f7`, `F5F6F7`).[^1]
+   `[R, G, B]` or a hex string (e.g., `#f5f6f7`, `f5f6f7`, `F5F6F7`).   
 
    ```erlang
    io:format("This is ~s color~n", [ecolor:set_foreground(green, "green")]).
@@ -32,7 +32,9 @@ terminal output, namely:
    io:format("This is ~s 24-bit color~n", [ecolor:set_foreground("#002B36", "#002B36")]).
    io:format("This is ~s 24-bit color~n", [ecolor:set_foreground("002B36", "#002B36")]).
    io:format("This is ~s 24-bit color~n", [ecolor:set_foreground([0, 43, 54], "rgb(0, 43, 54)")]).
-   ```   
+   ```
+
+   **Note**: 24-bit colors (a.k.a RGB or true colors) are not widely supported.
 
 - `set_background/2`: sets background color. Arguments are exactly the same
   as those of `set_foreground/2`.
@@ -50,5 +52,3 @@ terminal output, namely:
   %% This example may not work on some terminals.
   io:format("This is ~s format~n", [ecolor:set_text_style([italic, underline], "italic and underline")]).
   ```
-
-[^1]: 24-bit colors (a.k.a RGB or true colors) are not widely supported.
