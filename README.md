@@ -20,7 +20,8 @@ terminal output, namely:
    (`string()`, `iodata()`, etc...) or another style. [The eight standard
    ANSI colors](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors) are
    supplied via the corresponding atoms (`black`, `red`, `green`, `yellow`,
-   `blue`, `magenta`, `cyan`, `white`).
+   `blue`, `magenta`, `cyan`, `white`); [8-bit colors](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit) are supplied via their corresponding bytes (any
+   value between `0` and `255`).
 
 - `set_background/2`: sets background color. Arguments are exactly the same
   as those of `set_foreground/2`.
