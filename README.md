@@ -55,3 +55,16 @@ terminal output, namely:
 
   ***Note**: except for the `bold` format, other formats may not be supported
   by [some terminals](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).*
+
+- `new_style/0` and `set_style/2`: these two functions allow you add more
+   advanced styling to your text. Example:
+
+   ```erlang
+   %% bold, white text on red background.
+   S0 = ecolor:new_style(),
+   S1 = ecolor:set_text_style(bold, S0),
+   S2 = ecolor:set_foreground(white, S1),
+   Style = ecolor:set_background(red, S2).
+
+   io:format("This is ~s style~n", [ecolor:set_style(Style, "bold, white text on red background")]).
+   ```
